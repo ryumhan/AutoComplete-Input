@@ -1,28 +1,47 @@
 /* @date 2021-03-09
 * @author ryumhan
 */
-import Component from "../components/Component.js";
+
 import { InputHandler } from "../core/InputHandler.js";
 import ItemList from "../components/ItemList.js";
+
+//Define ItemList, ClearBtn for custom usage
+customElements.define("item-list", ItemList);
 
 /**
  * container class for wrapping Presentational component ItemList
  */
 export default class ItemContainer extends HTMLElement {
-    private handler_: InputHandler = new InputHandler
+    private handler_: InputHandler = new InputHandler();
 
-    Setup() {
-        // this.state = {};
+    connectedCallback() {
+        console.log("ItemContainer Connected");
+        this.render();
     }
 
-    UIElements() {
-        // const { itemList } = this.state;
-        // const placeholder = this.props;
-
-        return `<></>`
+    /**
+     * Observing the attributes about data.
+     */
+    static get observedAttributes() {
+        return ['data'];
     }
 
-    SetEvent() {
+    /**
+     * When observing data is changed, this function would be called.
+     * condition - debounce
+     */
+    attributeChangedCallback() {
+        this.handler_.Debounce(() => {
+            console.log("rerendering attributeChanged :", this.attributes.getNamedItem("data")?.value);
+            this.render();
+        }, 2000);
+    }
 
+    render() {
+        const items = JSON.stringify(this.handler_.Fetch());
+        const id = this.attributes.getNamedItem("listId")?.value;
+
+        this.innerHTML =
+            `<item-list listId = ${id} list = ${items}></item-list>`
     }
 }

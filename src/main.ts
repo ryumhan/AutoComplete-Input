@@ -7,7 +7,7 @@ class Main {
     constructor() {
         const App = document.querySelector('#app');
         if (App instanceof HTMLElement) {
-            new AutoInputComponent(App, { placeholder: "Enter the title", listId: "", namespace: "" });
+            new AutoInputComponent(App, { placeholder: "Title,Director,Actor", id: "customAuto", listId: "autolist" });
         }
     }
 }

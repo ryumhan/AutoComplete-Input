@@ -18,7 +18,7 @@ export default class Component {
 
     Setup() { }
 
-    UIElements() { return ''; }
+    UITemplate() { return ''; }
 
     SetEvent() { }
 
@@ -28,7 +28,7 @@ export default class Component {
     }
 
     Render() {
-        this.targetElement.innerHTML = this.UIElements();
+        this.targetElement.innerHTML = this.UITemplate();
         this.SetEvent();
     }
 }
