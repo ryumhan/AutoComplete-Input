@@ -1,0 +1,23 @@
+{
+  "name": "autocomplete_input",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryumhan/AutoComplete-Input.git"
+  },
+  "author": "ryumhan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryumhan/AutoComplete-Input/issues"
+  },
+  "homepage": "https://github.com/ryumhan/AutoComplete-Input#readme"
+}
