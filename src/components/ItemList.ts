@@ -2,7 +2,7 @@
  * @author ryumhan
  */
 
-import { autoDataSet } from "../core/InputHandler.js"
+import { autoDataSet } from "../core/OnMemory.js"
 
 export default class ItemList extends HTMLElement {
   connectedCallback() {
@@ -31,7 +31,7 @@ export default class ItemList extends HTMLElement {
 
     this.innerHTML =
       `<datalist id=${id}>
-          ${items.map((item: autoDataSet) => `<option id = ${item.id} value = ${item.text}>`).join('')}
+          ${items.map((item: autoDataSet) => `<option id = ${item.id} value = \'${item.text}\'>`).join('')}
        </datalist>`
   }
 }

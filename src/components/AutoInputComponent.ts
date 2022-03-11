@@ -51,7 +51,7 @@ export default class AutoInputComponent extends Component {
 
     return `
             <div class = "auto-input-group">
-                <input type = "search" placeholder = ${placeholder} list = ${listId} id = ${id}>
+                <input type = "search" placeholder = \'${placeholder}\' list = ${listId} id = ${id}>
                   <input-container id = ${id + "-container"} listId=${listId}><input-container/> 
                 </input>
             </div>

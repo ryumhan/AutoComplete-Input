@@ -2,16 +2,37 @@
  * @author ryumhan
  */
 
-export interface autoDataSet {
-    text: string,
-    id: number
-}
+import { OnMemory, autoDataSet } from "./OnMemory.js";
 
 export class InputHandler {
+    private memory_: OnMemory = new OnMemory;
+    private url_: string = "https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=";
+    private currentInput_: string = "";
     private inDebounce_: number = 0;
 
-    Fetch(): Array<autoDataSet> {
-        return [{ "text": "가타카", "id": 1 }, { "text": "강철비", "id": 2 }, { "text": "강철비2", "id": 3 }, { "text": "기생충", "id": 4 }]
+    private Fetch() {
+        const target = this.url_ + this.currentInput_;
+        console.log("GetMethod url - ", target);
+
+        fetch(target).then((response) => {
+            response.json().then((data) => {
+                this.SetOnMemory(this.currentInput_, data);
+                console.log("Get data about ", this.currentInput_, data);
+            });
+        }).catch((error) => console.log("GetMethod error:", error));;
+    }
+    /**
+     * Using fetch function, Get Method at url would be worked, 
+     * if same request exist on memory, doesn't request.
+     * @param input input string value from input box.
+     */
+    GetMethod(input: string) {
+        this.currentInput_ = input;
+        if (this.memory_.OnMemory(input)) {
+            return;
+        }
+
+        this.Fetch();
     }
 
     /**
@@ -43,4 +64,12 @@ export class InputHandler {
             this.inDebounce_ = 0;
         }
     };
+
+    SetOnMemory(input: string, data: Array<autoDataSet>) {
+        this.memory_.Update(input, data);
+    }
+
+    GetOnMemory(): Array<autoDataSet> {
+        return this.memory_.GetMemory(this.currentInput_)
+    }
 }
