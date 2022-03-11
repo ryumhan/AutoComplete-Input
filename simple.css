@@ -1,0 +1,27 @@
+.clearbtn {
+    position: absolute;
+    right: 3px;
+    top: 0;
+    bottom: 0;
+    width: 10px;
+    height: 14px;
+    margin: auto;
+    font-size: 12px;
+    cursor: pointer;
+    color: #ccc;
+    background-color: #fff;
+}
+
+.auto-input-group *{
+    align-content: center;
+    vertical-align: middle;
+  }
+
+input {
+    width: 30%;
+    border-radius: 20px;
+    border: 1px solid #bbb;
+    margin: 10px 0;
+    padding: 10px 12px;
+    font-family: fontAwesome;
+}
