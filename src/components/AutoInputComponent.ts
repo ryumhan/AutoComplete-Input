@@ -10,7 +10,6 @@ customElements.define("input-container", ItemContainer);
 interface IPropsAutoInput {
   placeholder: string
   id: string
-  listId: string
 }
 
 export default class AutoInputComponent extends Component {
@@ -18,7 +17,9 @@ export default class AutoInputComponent extends Component {
     super(targetElement, props);
   }
 
-  Setup() { }
+  Setup() {
+    this.state = {};
+  }
 
   SetEvent() {
     const id = this.props.id;
@@ -26,9 +27,10 @@ export default class AutoInputComponent extends Component {
 
     inputElement?.addEventListener("keyup", (e: KeyboardEvent) => {
       const input = inputElement?.value;
-      this.SetState({ data: input });
-
-      e.stopPropagation();
+      //Only availabe input exist
+      if (input.trim().length && this.state.data != input) {
+        this.SetState({ data: input });
+      }
     });
   }
 
@@ -40,21 +42,21 @@ export default class AutoInputComponent extends Component {
   SetState(newState: any): void {
     const child = document.getElementById(this.props.id + "-container");
     child?.setAttribute("data", newState.data);
+    //Update State
+    this.state.data = newState.data;
   }
 
   UITemplate() {
     console.log("AutoInputComponent is Templated");
 
     const placeholder: string = this.props.placeholder;
-    const listId = this.props.listId;
     const id = this.props.id;
 
     return `
             <div class = "auto-input-group">
-                <input type = "search" placeholder = \'${placeholder}\' list = ${listId} id = ${id}>
-                  <input-container id = ${id + "-container"} listId=${listId}><input-container/> 
-                </input>
+                <input type = "search" placeholder = \'${placeholder}\' id = ${id} autocomplete="off">
+                <input-container id = ${id + "-container"}> 
             </div>
-            `
+           `
   }
 }

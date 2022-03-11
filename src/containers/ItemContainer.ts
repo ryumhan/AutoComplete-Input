@@ -28,23 +28,22 @@ export default class ItemContainer extends HTMLElement {
 
     /**
      * When observing data is changed, this function would be called.
-     * Condition - debounced data can be set to memory.
+     * Condition - debounced data can be set to memory / only input exist
      */
     attributeChangedCallback() {
         this.handler_.Debounce(() => {
             const input = <string>this.attributes.getNamedItem("data")?.value;
-            this.handler_.GetMethod(input);
-
-            console.log("rerendering attributeChanged :", input);
-            this.render();
+            this.handler_.GetMethod(input, () => {
+                console.debug("Rerender attributeChanged :", input);
+                this.render();
+            });
         }, 500);
     }
 
     render() {
         const items = JSON.stringify(this.handler_.GetOnMemory());
-        const id = this.attributes.getNamedItem("listId")?.value;
         // Add Element 
         this.innerHTML =
-            `<item-list listId=${id} list=\'${items}\'/>`
+            `<item-list list=\'${items}\'/>`
     }
 }

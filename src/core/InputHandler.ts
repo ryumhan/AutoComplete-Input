@@ -10,14 +10,16 @@ export class InputHandler {
     private currentInput_: string = "";
     private inDebounce_: number = 0;
 
-    private Fetch() {
+    private Fetch(callback: Function) {
         const target = this.url_ + this.currentInput_;
-        console.log("GetMethod url - ", target);
+        console.debug("GetMethod url - ", target);
 
         fetch(target).then((response) => {
             response.json().then((data) => {
                 this.SetOnMemory(this.currentInput_, data);
                 console.log("Get data about ", this.currentInput_, data);
+                //callback
+                callback();
             });
         }).catch((error) => console.log("GetMethod error:", error));;
     }
@@ -26,13 +28,13 @@ export class InputHandler {
      * if same request exist on memory, doesn't request.
      * @param input input string value from input box.
      */
-    GetMethod(input: string) {
+    GetMethod(input: string, callback: Function) {
         this.currentInput_ = input;
         if (this.memory_.OnMemory(input)) {
             return;
         }
 
-        this.Fetch();
+        this.Fetch(callback);
     }
 
     /**

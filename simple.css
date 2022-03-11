@@ -1,27 +1,48 @@
-.clearbtn {
-    position: absolute;
-    right: 3px;
-    top: 0;
-    bottom: 0;
-    width: 10px;
-    height: 14px;
+.center {
     margin: auto;
-    font-size: 12px;
-    cursor: pointer;
-    color: #ccc;
-    background-color: #fff;
+    width: 30%;
+    padding: 10px;
 }
 
-.auto-input-group *{
-    align-content: center;
-    vertical-align: middle;
-  }
+.auto-input-group {
+    position: relative;
+}
 
-input {
-    width: 30%;
-    border-radius: 20px;
-    border: 1px solid #bbb;
+input[type=search] {
+    border-radius: 10px;
+    border: 2px solid #bbb;
     margin: 10px 0;
     padding: 10px 12px;
     font-family: fontAwesome;
+    width: 100%;
+}
+
+.complete-list{
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-radius: 5px;
+    border-top: none;
+    border-bottom: 2px solid #d4d4d4;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.complete-list div{
+    border-radius: 20px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #fff; 
+}
+
+/*when hovering an item:*/
+.complete-list div:hover {
+    background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.complete-active {
+    background-color: DodgerBlue !important; 
+    color: #ffffff; 
 }
