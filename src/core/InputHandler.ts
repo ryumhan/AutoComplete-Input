@@ -74,4 +74,8 @@ export class InputHandler {
     GetOnMemory(): Array<autoDataSet> {
         return this.memory_.GetMemory(this.currentInput_)
     }
+
+    Input() {
+        return this.currentInput_;
+    }
 }
