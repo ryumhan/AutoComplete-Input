@@ -19,9 +19,20 @@ export default class AutoInputComponent extends Component {
     super(targetElement, props);
   }
 
+  private updateFocus(focusPos: number) {
+    this.SetState({ focusPos: focusPos });
+    console.debug("updateFocus", this.state.focusPos);
+  }
+
+
+  private clearAll() {
+    this.SetState({ itemList: [], input: " ", focusPos: -1 });
+    console.debug("clearAll", this.state.focusPos);
+  }
+
   Setup() {
     console.debug("AutoInputComponent - Initialize state");
-    this.state = { itemList: [], input: " " };
+    this.state = { itemList: [], input: " ", focusPos: -1 };
   }
 
   /**
@@ -30,7 +41,13 @@ export default class AutoInputComponent extends Component {
    * @param newState data from input value
    */
   SetState(newState: any): void {
-    //Update State
+    //Update focusPos first
+    this.state.focusPos = newState.focusPos;
+    if (!newState.itemList || !newState.input) {
+      return
+    }
+
+    //Update Other State
     this.state.itemList = newState.itemList;
     this.state.input = newState.input;
 
@@ -41,34 +58,34 @@ export default class AutoInputComponent extends Component {
   }
 
   SetEvent() {
-    let focusPos = -1;
-
     const id = this.props.id;
+    const handler: InputHandler = new InputHandler();
     const inputElement = <HTMLInputElement>document.getElementById(id);
+
     inputElement.addEventListener("click", (e: MouseEvent) => {
-      this.SetState({ input: "", itemList: [] });
-      focusPos = -1;
+      this.clearAll();
     });
 
-    const handler: InputHandler = new InputHandler();
     //When Typing the character into the input box.
     inputElement?.addEventListener("input", () => {
       //Only availabe input exist
       handler.Debounce(() => {
         //Input value on Time.
         const input = inputElement?.value;
-        if (input.trim().length && this.state.data != input) {
-          handler.GetMethod(input, () => {
-            this.SetState({ input: input, itemList: handler.GetOnMemory() });
-          });
+        if (!input.trim().length) {
+          return this.clearAll();
         }
-      }, 400);
+
+        handler.GetMethod(input, () => {
+          this.SetState({ input: input, itemList: handler.GetOnMemory(), focusPos: -1 });
+        });
+
+      }, 300);
     });
 
 
     //When Only arrow or esc, enter key
     inputElement.addEventListener("keydown", (e: KeyboardEvent) => {
-      e.stopPropagation();
       const keyType = e.code;
       if (!this.state.itemList.length || (keyType != "Enter" && keyType != "Escape"
         && keyType != "ArrowUp" && keyType != "ArrowDown")) {
@@ -77,29 +94,31 @@ export default class AutoInputComponent extends Component {
 
       if (keyType == "Escape") {
         //Clear State and Rerender Item List
-        this.SetState({ input: "", itemList: [] });
-        focusPos = -1;
+        return this.clearAll();
+      }
+
+      // For Korean Typing
+      if (e.isComposing) {
         return;
       }
 
+      let focusPos = this.state.focusPos;
       if (keyType == "Enter") {
-        //Prevent any Element working
-        e.preventDefault();
         const current = document.getElementsByName("item" + focusPos)[0];
         //Clear State and Rerender Item List
         const val = current?.getElementsByTagName("input")[0].value;
         inputElement.value = val;
 
-        this.SetState({ input: val, itemList: [] });
-        focusPos = -1;
+        return this.clearAll();
       }
 
-      const size = handler.GetOnMemory().length;
+      // If moving to element, selection is changed.
       if (focusPos != -1) {
         const prev = document.getElementsByName("item" + focusPos)[0];
         prev?.classList.remove("complete-active");
       }
 
+      const size = handler.GetOnMemory().length;
       if (keyType == "ArrowUp") {
         focusPos--;
         focusPos = focusPos == -1 ? size - 1 : focusPos;
@@ -110,9 +129,14 @@ export default class AutoInputComponent extends Component {
         focusPos %= size;
       }
 
-      console.debug("key", keyType, "pos", focusPos);
+      //Update focus value and Element
+      this.updateFocus(focusPos);
+
       const current = document.getElementsByName("item" + focusPos)[0];
       current?.setAttribute("class", "complete-active");
+      //Prevent any Other working
+      e.preventDefault();
+      console.debug("key", keyType, "pos", focusPos);
     });
   }
 

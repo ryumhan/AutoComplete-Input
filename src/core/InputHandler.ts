@@ -31,7 +31,7 @@ export class InputHandler {
     GetMethod(input: string, callback: Function) {
         this.currentInput_ = input;
         if (this.memory_.OnMemory(input)) {
-            return;
+            return callback();
         }
 
         this.Fetch(callback);
