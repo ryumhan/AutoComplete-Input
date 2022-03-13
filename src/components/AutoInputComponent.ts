@@ -2,8 +2,8 @@
 * @author ryumhan
 */
 import Component from "./Component.js";
-import ItemList from "../components/ItemList.js";
 
+import { ItemList } from "../components/ItemList.js";
 import { InputHandler } from "../core/InputHandler.js";
 
 //Define ItemList, ClearBtn for custom usage
@@ -44,7 +44,7 @@ export default class AutoInputComponent extends Component {
     //Update focusPos first
     this.state.focusPos = newState.focusPos;
     if (!newState.itemList || !newState.input) {
-      return
+      return;
     }
 
     //Update Other State
@@ -55,6 +55,11 @@ export default class AutoInputComponent extends Component {
     const child = document.getElementById(this.props.id + "-list");
     child?.setAttribute("input", this.state.input);
     child?.setAttribute("list", JSON.stringify(this.state.itemList));
+
+    //display on When item exist
+    if (this.state.itemList.length) {
+      child?.setAttribute("style", "display : block");
+    }
   }
 
   SetEvent() {
@@ -62,8 +67,18 @@ export default class AutoInputComponent extends Component {
     const handler: InputHandler = new InputHandler();
     const inputElement = <HTMLInputElement>document.getElementById(id);
 
-    inputElement.addEventListener("click", (e: MouseEvent) => {
+    //When click the input btn, Only there are no list
+    inputElement?.addEventListener("focusout", () => {
       this.clearAll();
+    });
+
+    //When click the input btn, Only there are no list
+    inputElement?.addEventListener("focusin", () => {
+      const input = inputElement?.value;
+
+      handler.GetMethod(input, () => {
+        this.SetState({ input: input, itemList: handler.GetOnMemory(), focusPos: -1 });
+      });
     });
 
     //When Typing the character into the input box.
@@ -72,42 +87,45 @@ export default class AutoInputComponent extends Component {
       handler.Debounce(() => {
         //Input value on Time.
         const input = inputElement?.value;
+        //if only space
         if (!input.trim().length) {
           return this.clearAll();
+        }
+
+        //unnecessary call would be blocked for all browswer
+        if (input == this.state.input && this.state.itemList.length) {
+          return;
         }
 
         handler.GetMethod(input, () => {
           this.SetState({ input: input, itemList: handler.GetOnMemory(), focusPos: -1 });
         });
-
-      }, 300);
+      }, 400);
     });
 
-
     //When Only arrow or esc, enter key
-    inputElement.addEventListener("keydown", (e: KeyboardEvent) => {
+    inputElement?.addEventListener("keydown", (e: KeyboardEvent) => {
       const keyType = e.code;
       if (!this.state.itemList.length || (keyType != "Enter" && keyType != "Escape"
         && keyType != "ArrowUp" && keyType != "ArrowDown")) {
         return;
       }
 
-      if (keyType == "Escape") {
-        //Clear State and Rerender Item List
-        return this.clearAll();
-      }
-
-      // For Korean Typing
       if (e.isComposing) {
         return;
+      }
+
+      //Clear State and Rerender Item List
+      if (keyType == "Escape") {
+        return this.clearAll();
       }
 
       let focusPos = this.state.focusPos;
       if (keyType == "Enter") {
         const current = document.getElementsByName("item" + focusPos)[0];
-        //Clear State and Rerender Item List
         const val = current?.getElementsByTagName("input")[0].value;
-        inputElement.value = val;
+
+        inputElement.value = val ? val : this.state.input;
 
         return this.clearAll();
       }
@@ -121,7 +139,7 @@ export default class AutoInputComponent extends Component {
       const size = handler.GetOnMemory().length;
       if (keyType == "ArrowUp") {
         focusPos--;
-        focusPos = focusPos == -1 ? size - 1 : focusPos;
+        focusPos = focusPos < 0 ? size - 1 : focusPos;
       }
 
       if (keyType == "ArrowDown") {
@@ -151,7 +169,7 @@ export default class AutoInputComponent extends Component {
     return `
             <div class = "auto-input-group">
                 <input type = "search" placeholder = \'${placeholder}\' id = ${id} autocomplete="off">
-                <item-list id = ${id + "-list"} input = \'${input}\' list=\'${items}\'/>
+                <item-list id = ${id + "-list"} input = \'${input}\' list=\'${items}\' style = "display : none"/>
             </div>
            `
   }

@@ -10,6 +10,10 @@ export class InputHandler {
     private currentInput_: string = "";
     private inDebounce_: number = 0;
 
+    /**
+     * Try to get the data list using API url
+     * @param callback when fetch success, callback function would be called.
+     */
     private Fetch(callback: Function) {
         const target = this.url_ + this.currentInput_;
         console.debug("GetMethod url - ", target);
@@ -17,11 +21,11 @@ export class InputHandler {
         fetch(target).then((response) => {
             response.json().then((data) => {
                 this.SetOnMemory(this.currentInput_, data);
-                console.log("Get data about ", this.currentInput_, data);
+                console.debug("Get data about ", this.currentInput_, data);
                 //callback
                 callback();
             });
-        }).catch((error) => console.log("GetMethod error:", error));;
+        }).catch((error) => console.error("GetMethod error:", error));;
     }
     /**
      * Using fetch function, Get Method at url would be worked, 
@@ -33,7 +37,7 @@ export class InputHandler {
         if (this.memory_.OnMemory(input)) {
             return callback();
         }
-
+        //if not exist
         this.Fetch(callback);
     }
 

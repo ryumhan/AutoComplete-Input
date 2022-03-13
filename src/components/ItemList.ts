@@ -3,8 +3,16 @@
  */
 
 import { autoDataSet } from "../core/OnMemory.js"
+import { Item } from "./Item.js";
+import { ItemWithBoldCh } from "./ItemWithBoldCh.js"
 
-export default class ItemList extends HTMLElement {
+customElements.define("autocomplete-item", Item);
+customElements.define("autocomplete-itemwiths", ItemWithBoldCh);
+
+export class ItemList extends HTMLElement {
+  /**
+   * When ItemList is created, then this function would be called first.
+   */
   connectedCallback() {
     console.debug("ItemList Connected");
     this.render();
@@ -28,21 +36,19 @@ export default class ItemList extends HTMLElement {
 
   MakeAutoCompleteList(items: Array<autoDataSet>, input: string): string {
     const template: string = items.map((item: autoDataSet, index: number) => {
-      const val = item.text;
-      const pos = val.indexOf(input);
+      const inputId: string = <string>this.attributes.getNamedItem("id")?.value.split("-list")[0];
+
+      const val: string = item.text;
+      const pos: number = val.indexOf(input);
+
       if (pos == -1) {
-        return `<div id = ${item.id} name = "item${index.toString()}\">
-                  ${val}
-                  <input type = "hidden" value = \'${val}\'/>
-                </div>`;
+        //not including item
+        return `<autocomplete-item inputId = ${inputId} itemId = ${item.id} name = "item${index.toString()}\" itemVal =\'${val}\'></autocomplete-item>`;
       }
 
+      //including item if matched character exist with input
       const subs: string = val.substring(pos + input.length, val.length);
-      //if matched character exist with input
-      return `<div id = ${item.id} name = "item${index.toString()}\">
-                  <strong style = "color : blue">${input}</strong>${subs}
-                  <input type = "hidden" value = \'${val}\'/>
-              </div>`;
+      return `<autocomplete-itemwiths inputId = ${inputId} itemId = ${item.id} name = "item${index.toString()}\" itemVal =\'${val}\' input =\'${input}\' subs =\'${subs}\'></autocomplete-itemwiths>`;
     }).join('');
 
     return template;

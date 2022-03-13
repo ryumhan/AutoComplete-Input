@@ -19,10 +19,9 @@ input[type=search] {
 
 .complete-list{
     position: absolute;
-    border: 1px solid #d4d4d4;
+    border: 0.5px solid #d4d4d4;
     border-radius: 5px;
     border-top: none;
-    border-bottom: 2px solid #d4d4d4;
     z-index: 99;
     top: 100%;
     left: 0;
@@ -42,7 +41,8 @@ input[type=search] {
 }
 
 /*when navigating through the items using the arrow keys:*/
-.complete-active {
-    background-color: DodgerBlue !important; 
-    color: #ffffff; 
+.complete-active div{
+    /* background-color: DodgerBlue !important;  */
+    border: 2px solid DodgerBlue;
+    /* color: #ffffff;  */
 }
