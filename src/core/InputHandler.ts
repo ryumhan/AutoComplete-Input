@@ -5,10 +5,10 @@
 import { OnMemory, autoDataSet } from "./OnMemory.js";
 
 export class InputHandler {
-    private memory_: OnMemory = new OnMemory;
     private url_: string = "https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=";
     private currentInput_: string = "";
     private inDebounce_: number = 0;
+    private memory_: OnMemory = new OnMemory;
 
     /**
      * Try to get the data list using API url
@@ -71,14 +71,27 @@ export class InputHandler {
         }
     };
 
+    /**
+     * save the memory to user after
+     * if any input already exist in memory, or data set has no data, then it will not be set
+     * @param input input string value matching with data set
+     * @param data data set to save in memory
+     */
     SetOnMemory(input: string, data: Array<autoDataSet>) {
         this.memory_.Update(input, data);
     }
 
+    /**
+     * Get data set from memory which has input key.
+     * @returns data set requested
+     */
     GetOnMemory(): Array<autoDataSet> {
         return this.memory_.GetMemory(this.currentInput_)
     }
 
+    /**
+     * Retrun the current input string value
+     */
     Input() {
         return this.currentInput_;
     }

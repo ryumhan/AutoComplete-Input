@@ -11,6 +11,30 @@ customElements.define("autocomplete-itemwiths", ItemWithBoldCh);
 
 export class ItemList extends HTMLElement {
   /**
+   * Using Items and input data, make the autocomplete list
+   * @param items item list from api data
+   * @param input input user typed
+   * @returns string value about UI template made in this function.
+   */
+  MakeAutoCompleteList(items: Array<autoDataSet>, input: string): string {
+    const template: string = items.map((item: autoDataSet, index: number) => {
+      //get values
+      const inputId: string = <string>this.attributes.getNamedItem("id")?.value.split("-list")[0];
+      const val: string = item.text;
+      const pos: number = val.indexOf(input);
+      //including item if matched character exist with input
+      if (pos != -1) {
+        const substring: string = val.substring(pos + input.length, val.length);
+        return `<autocomplete-itemwiths inputId = ${inputId} itemId = ${item.id} name = "item${index.toString()}\" itemVal =\'${val}\' input =\'${input}\' subs =\'${substring}\'></autocomplete-itemwiths>`;
+      }
+      //not including item
+      return `<autocomplete-item inputId = ${inputId} itemId = ${item.id} name = "item${index.toString()}\" itemVal =\'${val}\'></autocomplete-item>`;
+    }).join('');
+
+    return template;
+  }
+
+  /**
    * When ItemList is created, then this function would be called first.
    */
   connectedCallback() {
@@ -32,26 +56,6 @@ export class ItemList extends HTMLElement {
   attributeChangedCallback() {
     console.debug("ItemList Rerender, attributeChanged");
     this.render();
-  }
-
-  MakeAutoCompleteList(items: Array<autoDataSet>, input: string): string {
-    const template: string = items.map((item: autoDataSet, index: number) => {
-      const inputId: string = <string>this.attributes.getNamedItem("id")?.value.split("-list")[0];
-
-      const val: string = item.text;
-      const pos: number = val.indexOf(input);
-
-      if (pos == -1) {
-        //not including item
-        return `<autocomplete-item inputId = ${inputId} itemId = ${item.id} name = "item${index.toString()}\" itemVal =\'${val}\'></autocomplete-item>`;
-      }
-
-      //including item if matched character exist with input
-      const subs: string = val.substring(pos + input.length, val.length);
-      return `<autocomplete-itemwiths inputId = ${inputId} itemId = ${item.id} name = "item${index.toString()}\" itemVal =\'${val}\' input =\'${input}\' subs =\'${subs}\'></autocomplete-itemwiths>`;
-    }).join('');
-
-    return template;
   }
 
   render() {

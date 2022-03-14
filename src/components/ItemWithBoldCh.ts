@@ -2,20 +2,15 @@
  * @author ryumhan
  */
 
-export class ItemWithBoldCh extends HTMLElement {
-    connectedCallback() {
-        console.debug("Item Connected");
-        this.render();
-    }
+import { Item } from "./Item.js";
 
-    updateToParent(value: string, targetId: string) {
-        const target = <HTMLInputElement>document.getElementById(targetId);
-        this.addEventListener("mousedown", () => {
-            console.debug("ItemWithBoldCh mousedown ", value);
-            target.value = value;
-        })
-    }
-
+/**
+ * ItemWithBoldCh get connectedCallback, UpdateToParent function from Item.
+ */
+export class ItemWithBoldCh extends Item {
+    /**
+     * ItemWithBoldCh has strong tag for emphaszing the character user input
+     */
     render() {
         const itemId = this.attributes.getNamedItem("itemId")?.value;
         const name: string = <string>this.attributes.getNamedItem("name")?.value;
@@ -30,6 +25,6 @@ export class ItemWithBoldCh extends HTMLElement {
 
 
         const parentId: string = <string>this.attributes.getNamedItem("inputId")?.value;
-        this.updateToParent(input + subs, parentId);
+        this.UpdateToParent(input + subs, parentId);
     }
 }

@@ -1,7 +1,9 @@
 .center {
     margin: auto;
-    width: 30%;
+    width: 25%;
     padding: 10px;
+    position: relative;
+    top: 200px;
 }
 
 .auto-input-group {
@@ -45,4 +47,16 @@ input[type=search] {
     /* background-color: DodgerBlue !important;  */
     border: 2px solid DodgerBlue;
     /* color: #ffffff;  */
+}
+
+.searchBtn{
+    position: absolute;
+    font-family: fontAwesome;
+    margin: 10px 0;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background-color: #0c9cf0;
+    cursor: pointer;
+    border: 2px solid #bbb;
+    color: rgb(255, 246, 246);
 }
