@@ -1,8 +1,10 @@
-/* @date 2021-03-11
+/* @date 2021-03-15
  * @author ryumhan
+ * This is the file for test of InpuHandler.
+ * All the code is same with ./src/core/InpuHandler
  */
 
-import { OnMemory, autoDataSet } from "./OnMemory.js";
+import { OnMemory, autoDataSet } from "../../src/core/OnMemory";
 
 export class InputHandler {
     private url_: string = "https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=";
