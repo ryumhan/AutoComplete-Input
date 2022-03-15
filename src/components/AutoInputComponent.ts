@@ -158,6 +158,7 @@ export default class AutoInputComponent extends Component {
           inputElement.value = val ? val : this.state.input;
           //Prevent any Other working
           e.preventDefault();
+          e.stopPropagation();
           return this.clearAll();
 
         case "ArrowUp":

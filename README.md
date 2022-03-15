@@ -7,10 +7,11 @@ Language
 Package
 - None 
 Unit TEST Package
-- chai, mocha, ts-node, jest-dom
+- chai, mocha, ts-node
 
-Develop, Html Serving, Test ENVIRONMENT
-- Liver Server Plugin (vscode)
+Run, Html Serving, Test/Develop ENVIRONMENT
+- Lite server ( npm start )
+- Live Server Plugin (vscode)
 
 Directory
 - simple.css

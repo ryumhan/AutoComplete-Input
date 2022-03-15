@@ -34,6 +34,7 @@ describe('InputHandler', () => {
         // after enough time, if done is true, check the value.
         setTimeout(() => {
             if (done) {
+                expect(cnt).not.equal(300);
                 expect(cnt).to.equal(3);
             }
         }, 850)
