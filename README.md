@@ -5,7 +5,7 @@ Language
 - Typescript
 
 Package
-- None 
+- lite-server (html serving)
 Unit TEST Package
 - chai, mocha, ts-node
 
