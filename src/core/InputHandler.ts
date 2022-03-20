@@ -5,7 +5,7 @@
 import { OnMemory, autoDataSet } from "./OnMemory.js";
 
 export class InputHandler {
-    private url_: string = "https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=";
+    private url_: string = "https://ㅇ.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=";
     private currentInput_: string = "";
     private inDebounce_: any = 0;
     private memory_: OnMemory = new OnMemory;
@@ -19,13 +19,20 @@ export class InputHandler {
         console.debug("GetMethod url - ", target);
 
         fetch(target).then((response) => {
-            response.json().then((data) => {
-                this.SetOnMemory(this.currentInput_, data);
-                console.debug("Get data about ", this.currentInput_, data);
-                //callback
-                callback();
-            });
-        }).catch((error) => console.error("GetMethod error:", error));;
+            if (response.status == 200 || response.status == 201) {
+                response.json().then((data) => {
+                    this.SetOnMemory(this.currentInput_, data);
+                    console.debug("Get data about ", this.currentInput_, data);
+                    //callback
+                    callback();
+                });
+            } else {
+                alert("Fetch Error " + response.status)
+            }
+        }).catch((error: TypeError) => {
+            alert("Url " + target + " is invalid " + error.message)
+            throw (error.message);
+        });
     }
 
     /**
