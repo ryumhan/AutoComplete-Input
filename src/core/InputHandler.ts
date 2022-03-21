@@ -27,11 +27,10 @@ export class InputHandler {
                     callback();
                 });
             } else {
-                alert("Fetch Error " + response.status)
+                alert("Fetch Error " + response.status);
             }
         }).catch((error: TypeError) => {
-            alert("Url " + target + " is invalid " + error.message)
-            throw (error.message);
+            console.error("Url " + target + " is invalid " + error.message)
         });
     }
 
