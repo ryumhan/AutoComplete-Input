@@ -2,6 +2,8 @@
  * @author ryumhan
  */
 
+require("../simple.css");
+
 import AutoInputComponent from "./components/AutoInputComponent";
 
 /**
