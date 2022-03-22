@@ -2,10 +2,10 @@
  * @author ryumhan
  */
 
-import { OnMemory, autoDataSet } from "./OnMemory.js";
+import { OnMemory, autoDataSet } from "./OnMemory";
 
 export class InputHandler {
-    private url_: string = "https://ㅇ.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=";
+    private url_: string = "https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=";
     private currentInput_: string = "";
     private inDebounce_: any = 0;
     private memory_: OnMemory = new OnMemory;
@@ -20,6 +20,7 @@ export class InputHandler {
 
         fetch(target).then((response) => {
             if (response.status == 200 || response.status == 201) {
+
                 response.json().then((data) => {
                     this.SetOnMemory(this.currentInput_, data);
                     console.debug("Get data about ", this.currentInput_, data);

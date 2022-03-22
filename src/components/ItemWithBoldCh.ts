@@ -2,7 +2,7 @@
  * @author ryumhan
  */
 
-import { Item } from "./Item.js";
+import { Item } from "./Item";
 
 /**
  * ItemWithBoldCh get connectedCallback, UpdateToParent function from Item.

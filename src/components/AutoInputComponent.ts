@@ -1,11 +1,11 @@
 /* @date 2021-03-09
 * @author ryumhan
 */
-import Component from "./Component.js";
+import Component from "./Component";
 
-import { ItemList } from "../components/ItemList.js";
-import { InputHandler } from "../core/InputHandler.js";
-import { SearchBtn } from "./SearchBtn.js";
+import { ItemList } from "../components/ItemList";
+import { InputHandler } from "../core/InputHandler";
+import { SearchBtn } from "./SearchBtn";
 
 //Define ItemList, ClearBtn for custom usage
 customElements.define("item-list", ItemList);
@@ -128,10 +128,10 @@ export default class AutoInputComponent extends Component {
           return;
         }
 
+
         handler.GetMethod(input, () => {
           this.SetState({ input: input, itemList: handler.GetOnMemory(), focusPos: -1 });
         });
-
       }, this.props.interval); // intervally debouncing
     });
 

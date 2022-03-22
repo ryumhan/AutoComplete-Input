@@ -1,21 +1,26 @@
 /* @date 2021-03-09
  * @author ryumhan
  */
-import AutoInputComponent from "./components/AutoInputComponent.js";
+
+import AutoInputComponent from "./components/AutoInputComponent";
 
 /**
  * Main section For App running.
  * App only have AutoInputComponent Element.
  */
-class Main {
-    constructor() {
-        const App = document.querySelector('#app');
+const App = document.querySelector('#app');
+
+function render() {
+    /**
+     * requestAnimationFrame doesn't district main thread
+     */
+    requestAnimationFrame(() => {
         if (App instanceof HTMLElement) {
             new AutoInputComponent(App, {
-                placeholder: "Title, Director, Actor", id: "customAuto", interval: 300
+                placeholder: "Title, Director, Actors", id: "customAuto", interval: 300
             });
         }
-    }
+    })
 }
 
-new Main
+render();

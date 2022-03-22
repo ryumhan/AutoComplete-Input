@@ -2,9 +2,9 @@
  * @author ryumhan
  */
 
-import { autoDataSet } from "../core/OnMemory.js"
-import { Item } from "./Item.js";
-import { ItemWithBoldCh } from "./ItemWithBoldCh.js"
+import { autoDataSet } from "../core/OnMemory"
+import { Item } from "./Item";
+import { ItemWithBoldCh } from "./ItemWithBoldCh"
 
 customElements.define("autocomplete-item", Item);
 customElements.define("autocomplete-itemwiths", ItemWithBoldCh);

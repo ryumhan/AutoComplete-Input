@@ -3,7 +3,7 @@
  */
 
 import { expect } from "chai"
-import { InputHandler } from "./TestBundler"
+import { InputHandler } from "../../src/core/InputHandler"
 
 describe('InputHandler', () => {
     it('After calling SetOnMemory about dataset user input, handler does not call the Fetch but callback function is called when handler get the data', () => {

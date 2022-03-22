@@ -1,11 +1,12 @@
-# AutoComplete-Input
+# Framworkless Study - AutoComplete-Input
 AutoComplete-Input assignment for Interview
 
 Language
 - Typescript
 
 Package
-- lite-server (html serving)
+- WebPack, Webpack html Plugin, Webpack dev-server
+
 Unit TEST Package
 - chai, mocha, ts-node
 
