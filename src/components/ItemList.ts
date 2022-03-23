@@ -7,9 +7,9 @@ import { Item } from "./Item";
 import { ItemWithBoldCh } from "./ItemWithBoldCh"
 
 customElements.define("autocomplete-item", Item);
-customElements.define("autocomplete-itemwiths", ItemWithBoldCh);
+customElements.define("autoco-mplete-itemwiths", ItemWithBoldCh);
 
-export class ItemList extends HTMLElement {
+export default class ItemList extends HTMLElement {
   /**
    * Using Items and input data, make the autocomplete list
    * @param items item list from api data

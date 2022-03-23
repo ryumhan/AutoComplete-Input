@@ -3,13 +3,9 @@
 */
 import Component from "./Component";
 
-import { ItemList } from "../components/ItemList";
+import ItemList from "../components/ItemList";
 import { InputHandler } from "../core/InputHandler";
 import { SearchBtn } from "./SearchBtn";
-
-//Define ItemList, ClearBtn for custom usage
-customElements.define("item-list", ItemList);
-customElements.define("search-btn", SearchBtn);
 
 interface IPropsAutoInput {
   placeholder: string // placeholder msg of input element
@@ -180,18 +176,20 @@ export default class AutoInputComponent extends Component {
   }
 
   UITemplate() {
-    const placeholder: string = this.props.placeholder;
-    const id = this.props.id;
+    const element: HTMLElement = <HTMLElement>this.targetElement.cloneNode(true);
 
-    const input = this.state.input;
-    const items = JSON.stringify(this.state.itemList);
+    const input = element.querySelector(".auto-input");
+    input?.setAttribute("placeholder", this.props.placeholder);
 
-    return `
-            <div class = "auto-input-group">
-                <input type = "search" placeholder = \'${placeholder}\' id = ${id} autocomplete="off">
-                <search-btn name = "Search" fromId = ${id}></search-btn>
-                <item-list id = ${id + "-list"} input = \'${input}\' list=\'${items}\' style = "display : none"/>
-            </div>
-           `
+
+    const itemlist = element.querySelector(".item-list");
+    itemlist?.setAttribute("input", this.state.input);
+    itemlist?.setAttribute("list", JSON.stringify(this.state.itemList));
+    //ToDO $().replaceWith
+    // itemlist?.replaceWith(newitemlist);
+
+    const button = element.querySelector(".searchBtn");
+
+    return element.innerHTML;
   }
 }

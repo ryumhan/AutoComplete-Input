@@ -10,15 +10,15 @@ import AutoInputComponent from "./components/AutoInputComponent";
  * Main section For App running.
  * App only have AutoInputComponent Element.
  */
-const App = document.querySelector('#app');
+const inputElement = document.querySelector('#autocomplete-input');
 
 function render() {
     /**
      * requestAnimationFrame doesn't district main thread
      */
     requestAnimationFrame(() => {
-        if (App instanceof HTMLElement) {
-            new AutoInputComponent(App, {
+        if (inputElement instanceof HTMLElement) {
+            new AutoInputComponent(inputElement, {
                 placeholder: "Title, Director, Actors", id: "customAuto", interval: 300
             });
         }
