@@ -12,6 +12,11 @@ add("itemlist", ItemList);
 add("input", Input);
 add("button", SearchBtn);
 
+const event = {
+  typeKeyDown() {},
+  selectItem() {},
+};
+
 export function render(target: HTMLElement, state: IState) {
   const cloneComponent = (target: HTMLElement) => {
     console.log("render", target.className);

@@ -2,8 +2,26 @@
  * @author ryumhan
  */
 
+let template: HTMLTemplateElement;
+
+function createItem(type: string): HTMLElement {
+  if (!template) {
+    template = <HTMLTemplateElement>document.getElementById(type);
+  }
+
+  return <HTMLElement>template.content.firstElementChild?.cloneNode(true);
+}
+
 export const getItem = (name: string, input: string) => {
-  return getNormalItem(name);
+  const item = createItem("normal-item");
+
+  const child = <HTMLInputElement>(
+    item.getElementsByTagName("input")[0].cloneNode(true)
+  );
+  child.value = name;
+
+  item.append(name, child);
+  return item;
 };
 
 const getNormalItem = (name: string) => {

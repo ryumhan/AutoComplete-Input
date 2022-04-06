@@ -5,15 +5,11 @@
 import { IState } from "../controller/controller";
 import { getItem } from "./Item";
 
-const getItemList = (state: IState) => {
+const setItemList = (targetElement: HTMLElement, state: IState) => {
   const { list, input } = state;
-  const childs = list
-    .map((name: string) => {
-      return getItem(name, input);
-    })
-    .join("");
-
-  return childs;
+  list.forEach((name: string) => {
+    targetElement.appendChild(getItem(name, input));
+  });
 };
 
 /**
@@ -25,7 +21,7 @@ export function ItemList(targetElement: HTMLElement, state: IState) {
   console.log("ItemList Functional Component is called");
 
   const element = <HTMLElement>targetElement.cloneNode(true);
-  element.innerHTML = getItemList(state);
+  setItemList(element, state);
 
   return element;
 }

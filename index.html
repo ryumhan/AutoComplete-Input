@@ -7,12 +7,26 @@
 </head>
 
 <body>
-  <div id="app" class="center">
+  <template id ="auto-complete-input">
     <div class="auto-input-group">
       <input class="auto-input" type="search" autocomplete="off" data-component="input">
       <div class="item-list" style="display : none" data-component="itemlist"></div>
       <button class="searchBtn" data-component="button">Search</button>
     </div>
+  </template>
+  <template id ="normal-item">
+    <div>
+      <input type = "hidden">
+    </div>
+  </template>
+  <template id ="strong-item">
+    <div>
+      <strong style = "color : blue"></strong>
+      <input type = "hidden">
+    </div>
+  </template>
+  <div class="center" id="app">
+  </div>
 </body>
 
 </html>

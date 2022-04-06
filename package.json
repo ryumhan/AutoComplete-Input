@@ -1,7 +1,7 @@
 {
   "name": "autocomplete_input",
   "version": "1.0.0",
-  "main": "src/main.ts",
+  "main": "src/app.ts",
   "directories": {
     "test": "test"
   },
