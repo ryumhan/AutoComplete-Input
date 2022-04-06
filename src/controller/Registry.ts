@@ -1,29 +1,26 @@
-import { Item } from "./Item";
-import ItemList from "./ItemList";
+import { IState } from "./controller";
 
-type Component = Function;
-
-interface IState {
-  [key: string]: any;
-}
+type Component = (target: HTMLElement, state: any) => HTMLElement;
 
 interface IRegistry {
   [key: string]: Component;
 }
 
-const registry: IRegistry = {};
+export const registry: IRegistry = {};
 
-const add = (name: string, component: Component) => {
+export const add = (name: string, component: Component) => {
+  console.log("registry add", name);
   registry[name] = renderWrapper(component);
 };
 
 /**
  * Using registry data-component and each functional element calling
  * replace the all the selected component which has valid data-component.
+ * @condition before render calling, add function should be first called for success render
  * @param component component implemented as UI functioinal element.
  * @returns HTMLElement
  */
-const renderWrapper = (component: Component) => {
+export const renderWrapper = (component: Component) => {
   return (targetElemnt: HTMLElement, state: IState) => {
     const element = <HTMLElement>component(targetElemnt, state);
 

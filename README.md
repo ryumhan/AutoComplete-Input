@@ -1,5 +1,5 @@
 # Framworkless Study - AutoComplete-Input
-AutoComplete-Input assignment for Interview
+AutoComplete-Input
 
 Language
 - Typescript

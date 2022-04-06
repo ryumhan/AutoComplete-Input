@@ -2,36 +2,17 @@
  * @author ryumhan
  */
 
-export class SearchBtn extends HTMLElement {
-    /**
-     * When Button clicked, using input value from target dom from parent, call the callback function
-     * @param dom input element target to get value 
-     */
-    SetUpEvent(dom: HTMLInputElement) {
-        this.addEventListener("click", () => {
-            const value = dom.value;
-            console.info("clicked", value);
-        })
-    }
+import { IState } from "../controller/controller";
 
-    /**
-     * When SearchBtn Created, call this
-     */
-    connectedCallback() {
-        console.debug("SearchBtn Connected");
-        this.render();
-    }
+const getBtn = (state: IState) => {
+  return `<button class = "searchBtn">search</button>`;
+};
 
-    /**
-     * render SearchBtn Element
-     */
-    render() {
-        const name: string = <string>this.attributes.getNamedItem("name")?.value;
-        const from: string = <string>this.attributes.getNamedItem("fromId")?.value;
+export function SearchBtn(targetElement: HTMLElement, state: IState) {
+  console.log("SearchBtn Functional Component is called");
 
-        this.innerHTML =
-            `<button class = "searchBtn">${name}</button>`;
+  const element = <HTMLElement>targetElement.cloneNode(true);
+  element.replaceWith(getBtn(state));
 
-        this.SetUpEvent(<HTMLInputElement>document.getElementById(from))
-    }
+  return element;
 }

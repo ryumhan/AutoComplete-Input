@@ -10,19 +10,22 @@ import AutoInputComponent from "./components/AutoInputComponent";
  * Main section For App running.
  * App only have AutoInputComponent Element.
  */
-const inputElement = document.querySelector('#autocomplete-input');
+const autoInputElement = document.querySelector(".auto-input-group");
 
 function render() {
-    /**
-     * requestAnimationFrame doesn't district main thread
-     */
-    requestAnimationFrame(() => {
-        if (inputElement instanceof HTMLElement) {
-            new AutoInputComponent(inputElement, {
-                placeholder: "Title, Director, Actors", id: "customAuto", interval: 300
-            });
-        }
-    })
+  /**
+   * requestAnimationFrame doesn't district main thread
+   */ requestAnimationFrame(() => {
+    if (autoInputElement instanceof HTMLElement) {
+      console.debug("requestAnimationFrame!!");
+
+      AutoInputComponent(autoInputElement, {
+        placeholder: "Title, Director, Actors",
+        uri: "https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=",
+        interval: 300,
+      });
+    }
+  });
 }
 
 render();
