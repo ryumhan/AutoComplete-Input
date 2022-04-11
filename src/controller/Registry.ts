@@ -1,17 +1,31 @@
-import { IState } from "./controller";
+import { IEvent, IState } from "./model";
 
-type Component = (target: HTMLElement, state: any) => HTMLElement;
+import { Input } from "../components/Input";
+import { ItemList } from "../components/ItemList";
+import { SearchBtn } from "../components/SearchBtn";
+import { IPropsAutoInput } from "../components/AutoInputComponent";
+
+type Component = (
+  target: HTMLElement,
+  state: IState,
+  props: IPropsAutoInput,
+  event: IEvent
+) => HTMLElement;
 
 interface IRegistry {
   [key: string]: Component;
 }
 
-export const registry: IRegistry = {};
+const registry: IRegistry = {};
 
-export const add = (name: string, component: Component) => {
+const add = (name: string, component: Component) => {
   console.log("registry add", name);
   registry[name] = renderWrapper(component);
 };
+
+add("itemlist", ItemList);
+add("input", Input);
+add("button", SearchBtn);
 
 /**
  * Using registry data-component and each functional element calling
@@ -20,9 +34,14 @@ export const add = (name: string, component: Component) => {
  * @param component component implemented as UI functioinal element.
  * @returns HTMLElement
  */
-export const renderWrapper = (component: Component) => {
-  return (targetElemnt: HTMLElement, state: IState) => {
-    const element = <HTMLElement>component(targetElemnt, state);
+function renderWrapper(component: Component) {
+  return (
+    targetElemnt: HTMLElement,
+    state: IState,
+    props: IPropsAutoInput,
+    event: IEvent
+  ) => {
+    const element = <HTMLElement>component(targetElemnt, state, props, event);
 
     const childComponents =
       element.querySelectorAll<HTMLElement>("[data-component]");
@@ -35,9 +54,24 @@ export const renderWrapper = (component: Component) => {
         return;
       }
 
-      target.replaceWith(child(target, state));
+      //call the componential function and replace with it
+      target.replaceWith(child(target, state, props, event));
     });
 
     return element;
   };
-};
+}
+
+export function renderAutoComplete(
+  target: HTMLElement,
+  state: IState,
+  props: IPropsAutoInput,
+  events: IEvent
+) {
+  const cloneComponent = (target: HTMLElement) => {
+    console.log("render", target.className);
+    return <HTMLElement>target.cloneNode(true);
+  };
+
+  return renderWrapper(cloneComponent)(target, state, props, events);
+}

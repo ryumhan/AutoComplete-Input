@@ -2,7 +2,7 @@
  * @author ryumhan
  */
 
-import { IState } from "../controller/controller";
+import { IState } from "../controller/model";
 
 const getBtn = (state: IState) => {
   return `<button class = "searchBtn">search</button>`;

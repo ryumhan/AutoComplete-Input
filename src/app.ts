@@ -5,6 +5,10 @@
 require("../simple.css");
 
 import AutoInputComponent from "./components/AutoInputComponent";
+import modelFactory, { IState } from "./controller/model";
+
+const model = modelFactory();
+const { addChangeListener, events } = model;
 
 /**
  * Main section For App running.
@@ -12,22 +16,30 @@ import AutoInputComponent from "./components/AutoInputComponent";
  */
 const app = document.querySelector("#app");
 
-function render() {
+const render = (state: IState) => {
   /**
    * requestAnimationFrame doesn't district main thread
-   */ requestAnimationFrame(() => {
+   */
+  requestAnimationFrame(() => {
     if (app instanceof HTMLElement) {
       console.debug("requestAnimationFrame!!");
 
-      app.replaceWith(
-        AutoInputComponent(app, {
+      const newApp = AutoInputComponent(
+        app,
+        state,
+        {
           placeholder: "Title, Director, Actors",
           uri: "https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=",
           interval: 300,
-        })
+        },
+        events
       );
+
+      //TODO applydiff
+      //applyDiff(document.body, app,newAutoInput)
+      app.replaceWith(newApp);
     }
   });
-}
+};
 
-render();
+addChangeListener(render);

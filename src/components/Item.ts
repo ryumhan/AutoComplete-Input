@@ -4,20 +4,21 @@
 
 let template: HTMLTemplateElement;
 
-function createItem(type: string): HTMLElement {
+const getTemplate = (type: string): HTMLElement => {
   if (!template) {
     template = <HTMLTemplateElement>document.getElementById(type);
   }
 
   return <HTMLElement>template.content.firstElementChild?.cloneNode(true);
-}
+};
 
 export const getItem = (name: string, input: string) => {
-  const item = createItem("normal-item");
+  const item = getTemplate("normal-item");
   item.append(name);
 
-  const child = <HTMLInputElement>item.getElementsByTagName("input")[0];
+  const child = <HTMLInputElement>item.querySelector("input");
   child.value = name;
-
+  //event delegation
+  item.dataset.value = name;
   return item;
 };

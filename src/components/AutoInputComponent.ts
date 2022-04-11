@@ -1,9 +1,11 @@
 /* @date 2021-03-09
  * @author ryumhan
  */
-import { render } from "../controller/controller";
 
-interface IPropsAutoInput {
+import { IEvent, IState } from "../controller/model";
+import { renderAutoComplete } from "../controller/registry";
+
+export interface IPropsAutoInput {
   placeholder: string; // placeholder msg of input element
   uri: string;
   interval: number; //interval for debounce requesting
@@ -11,7 +13,7 @@ interface IPropsAutoInput {
 
 let template: HTMLTemplateElement;
 
-function createAutoComplete(): HTMLElement {
+function getTemplate(): HTMLElement {
   if (!template) {
     template = <HTMLTemplateElement>(
       document.getElementById("auto-complete-input")
@@ -21,15 +23,14 @@ function createAutoComplete(): HTMLElement {
   return <HTMLElement>template.content.firstElementChild?.cloneNode(true);
 }
 
-export default (targetElement: HTMLElement, props: IPropsAutoInput) => {
-  const { placeholder, uri, interval } = props;
-  const element = targetElement.cloneNode(true);
-  element.appendChild(
-    render(createAutoComplete(), {
-      list: ["first", "second"],
-      input: "test",
-    })
-  );
+export default (
+  targetElement: HTMLElement,
+  state: IState,
+  props: IPropsAutoInput,
+  events: IEvent
+) => {
+  const element = <HTMLElement>targetElement.cloneNode(true);
+  element.append(renderAutoComplete(getTemplate(), state, props, events));
 
   return element;
 };
