@@ -1,15 +1,22 @@
 import { IEvent } from "../controller/model";
 import { IState } from "../controller/model";
 import { IPropsAutoInput } from "./AutoInputComponent";
+import { fetchItems } from "../core/fetchItems";
 
-const addEvent = (
+const addDebounceEvent = (
   element: HTMLInputElement,
   event: IEvent,
-  interval: number
+  interval: number,
+  uri: string
 ) => {
-  let inDebounce_: any = 0;
+  let inDebounce_: NodeJS.Timeout;
 
   element.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key == "Enter") {
+      console.log("enter!");
+      return;
+    }
+
     if (inDebounce_) {
       clearTimeout(inDebounce_);
     }
@@ -17,6 +24,10 @@ const addEvent = (
     inDebounce_ = setTimeout(() => {
       //If time is enough
       event.setInput(element.value);
+      if (element.value) {
+        const data = fetchItems(uri + element.value);
+        event.setItemList(data);
+      }
     }, interval);
   });
 };
@@ -28,7 +39,7 @@ export function Input(
   event: IEvent
 ) {
   console.log("Input Functional Component is called");
-  const { placeholder, interval } = props;
+  const { placeholder, interval, uri } = props;
   const { input } = state;
 
   const element = <HTMLInputElement>targetElement.cloneNode(true);
@@ -38,6 +49,6 @@ export function Input(
     element.value = input;
   }
 
-  addEvent(element, event, interval);
+  addDebounceEvent(element, event, interval, uri);
   return element;
 }

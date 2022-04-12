@@ -1,10 +1,12 @@
+import { autoDataSet } from "../core/fetchItems";
+
 export interface IState {
   [k: string]: any;
 }
 
 export interface IEvent {
   setInput(nextInput: string): void;
-  setItemList(nextList: Array<string>): void;
+  setItemList(nextList: Promise<Array<autoDataSet>>): void;
   clearItemList(): void;
 }
 
@@ -46,8 +48,13 @@ export default (initalState = INITIAL_STATE) => {
       state.list = [];
       invokeListeners();
     },
-    setItemList: (nextList: Array<string>) => {
-      state.list = nextList;
+    setItemList: async (nextDataSet: Promise<Array<autoDataSet>>) => {
+      const list = await nextDataSet;
+      state.list = list.map((e: autoDataSet) => {
+        return e.text;
+      });
+
+      console.log(state.list);
       invokeListeners();
     },
     setInput: (nextInput: string) => {

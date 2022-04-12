@@ -7,20 +7,29 @@ require("../simple.css");
 import AutoInputComponent from "./components/AutoInputComponent";
 import modelFactory, { IState } from "./controller/model";
 
+import { Input } from "./components/Input";
+import { ItemList } from "./components/ItemList";
+import { SearchBtn } from "./components/SearchBtn";
+
+import { add } from "./controller/registry";
+
+add("itemlist", ItemList);
+add("input", Input);
+add("button", SearchBtn);
+
 const model = modelFactory();
 const { addChangeListener, events } = model;
-
-/**
- * Main section For App running.
- * App only have AutoInputComponent Element.
- */
-const app = document.querySelector("#app");
 
 const render = (state: IState) => {
   /**
    * requestAnimationFrame doesn't district main thread
    */
   requestAnimationFrame(() => {
+    /**
+     * Main section For App running.
+     * App only have AutoInputComponent Element.
+     */
+    const app = document.querySelector("#app");
     if (app instanceof HTMLElement) {
       console.debug("requestAnimationFrame!!");
 
@@ -34,7 +43,6 @@ const render = (state: IState) => {
         },
         events
       );
-
       //TODO applydiff
       //applyDiff(document.body, app,newAutoInput)
       app.replaceWith(newApp);

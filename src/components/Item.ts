@@ -13,7 +13,9 @@ const getTemplate = (type: string): HTMLElement => {
 };
 
 export const getItem = (name: string, input: string) => {
-  const item = getTemplate("normal-item");
+  console.log("Item Component is called");
+
+  const item = <HTMLElement>getTemplate("normal-item").cloneNode(true);
   item.append(name);
 
   const child = <HTMLInputElement>item.querySelector("input");

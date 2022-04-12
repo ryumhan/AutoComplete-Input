@@ -1,8 +1,4 @@
 import { IEvent, IState } from "./model";
-
-import { Input } from "../components/Input";
-import { ItemList } from "../components/ItemList";
-import { SearchBtn } from "../components/SearchBtn";
 import { IPropsAutoInput } from "../components/AutoInputComponent";
 
 type Component = (
@@ -22,10 +18,6 @@ const add = (name: string, component: Component) => {
   console.log("registry add", name);
   registry[name] = renderWrapper(component);
 };
-
-add("itemlist", ItemList);
-add("input", Input);
-add("button", SearchBtn);
 
 /**
  * Using registry data-component and each functional element calling
@@ -62,7 +54,7 @@ function renderWrapper(component: Component) {
   };
 }
 
-export function renderAutoComplete(
+function renderAutoComplete(
   target: HTMLElement,
   state: IState,
   props: IPropsAutoInput,
@@ -75,3 +67,5 @@ export function renderAutoComplete(
 
   return renderWrapper(cloneComponent)(target, state, props, events);
 }
+
+export { add, renderAutoComplete };

@@ -30,7 +30,9 @@ export default (
   events: IEvent
 ) => {
   const element = <HTMLElement>targetElement.cloneNode(true);
-  element.append(renderAutoComplete(getTemplate(), state, props, events));
+  element
+    .querySelector(".auto-input-group")
+    ?.replaceWith(renderAutoComplete(getTemplate(), state, props, events));
 
   return element;
 };
