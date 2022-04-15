@@ -10,6 +10,14 @@ const differentValue = (node1: HTMLInputElement, node2: HTMLInputElement) => {
   return false;
 };
 
+const differentDataTxt = (node1: HTMLElement, node2: HTMLElement) => {
+  if (node1.dataset.txt !== node2.dataset.txt) {
+    return true;
+  }
+
+  return false;
+};
+
 const isNodeChanged = (node1: HTMLElement, node2: HTMLElement) => {
   const n1Attributes = node1.attributes;
   const n2Attributes = node2.attributes;
@@ -24,6 +32,10 @@ const isNodeChanged = (node1: HTMLElement, node2: HTMLElement) => {
 
     return attribute1 !== attribute2;
   });
+
+  if (differentDataTxt(node1, node2)) {
+    return true;
+  }
 
   if (differentAttribute) {
     return true;

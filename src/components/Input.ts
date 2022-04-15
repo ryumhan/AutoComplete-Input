@@ -17,6 +17,10 @@ const addDebounceEvent = (
       return;
     }
 
+    if (!element.value) {
+      return;
+    }
+
     if (inDebounce_) {
       clearTimeout(inDebounce_);
     }
