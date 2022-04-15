@@ -12,6 +12,7 @@ import { ItemList } from "./components/ItemList";
 import { SearchBtn } from "./components/SearchBtn";
 
 import { add } from "./controller/registry";
+import applyDiff from "./controller/applyDiff";
 
 add("itemlist", ItemList);
 add("input", Input);
@@ -44,8 +45,7 @@ const render = (state: IState) => {
         events
       );
       //TODO applydiff
-      //applyDiff(document.body, app,newAutoInput)
-      app.replaceWith(newApp);
+      applyDiff(document.body, app, newApp);
     }
   });
 };
