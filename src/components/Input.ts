@@ -13,11 +13,14 @@ const addDebounceEvent = (
 
   element.addEventListener("keydown", (e: KeyboardEvent) => {
     if (e.key == "Enter") {
-      console.log("enter!");
+      event.enterItem();
       return;
     }
 
-    if (!element.value) {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      event.arrowHandler(e.key);
+      //fixed cursor
+      e.preventDefault();
       return;
     }
 
@@ -26,13 +29,18 @@ const addDebounceEvent = (
     }
     //Set Timer
     inDebounce_ = setTimeout(() => {
+      const value = element.value;
       //If time is enough
-      event.setInput(element.value);
-      if (element.value) {
-        const data = fetchItems(uri + element.value);
+      event.setInput(value);
+      if (value) {
+        const data = fetchItems(uri + value);
         event.setItemList(data);
       }
     }, interval);
+  });
+
+  element.addEventListener("focusout", (e: Event) => {
+    event.clearItemList();
   });
 };
 
@@ -43,6 +51,7 @@ export function Input(
   event: IEvent
 ) {
   console.log("Input Functional Component is called");
+
   const { placeholder, interval, uri } = props;
   const { input } = state;
 

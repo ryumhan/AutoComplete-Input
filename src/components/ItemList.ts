@@ -7,15 +7,19 @@ import { IEvent } from "../controller/model";
 import { IPropsAutoInput } from "./AutoInputComponent";
 import { getItem } from "./Item";
 
-const setItemList = (targetElement: HTMLElement, state: IState) => {
+const setItemList = (
+  targetElement: HTMLElement,
+  state: IState,
+  event: IEvent
+) => {
   const { list, input } = state;
   list.forEach((name: string) => {
     targetElement.append(getItem(name, input));
   });
 
-  if (list.length) {
-    targetElement.setAttribute("style", "display : block");
-  }
+  list.length
+    ? event.setDisplayBlock()(targetElement)
+    : event.setDisplayNone()(targetElement);
 };
 
 const addEvent = (element: HTMLElement, event: IEvent) => {
@@ -41,9 +45,9 @@ export function ItemList(
   console.log("ItemList Functional Component is called");
 
   const element = <HTMLElement>targetElement.cloneNode(true);
-
-  setItemList(element, state);
+  //set item.
+  setItemList(element, state, event);
+  //set event.
   addEvent(element, event);
-
   return element;
 }

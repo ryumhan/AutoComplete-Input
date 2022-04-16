@@ -5,14 +5,19 @@ export interface IState {
 }
 
 export interface IEvent {
-  setInput(nextInput: string): void;
-  setItemList(nextList: Promise<Array<autoDataSet>>): void;
+  arrowHandler(arrow: string): void;
   clearItemList(): void;
+  enterItem(): void;
+  setInput(nextInput: string): void;
+  setDisplayBlock(): Function;
+  setDisplayNone(): Function;
+  setItemList(nextList: Promise<Array<autoDataSet>>): void;
 }
 
 const INITIAL_STATE = {
-  list: [],
   input: "",
+  list: [],
+  pos: -1,
 };
 
 const cloneDeep = (x: IState) => {
@@ -24,6 +29,11 @@ const freeze = (x: IState) => Object.freeze(cloneDeep(x));
 export default (initalState = INITIAL_STATE) => {
   const state = cloneDeep(initalState);
   let listeners: Array<Function> = [];
+
+  const setPos = (nextpos: number) => {
+    state.pos = nextpos;
+    console.log("current pos", state.pos);
+  };
 
   const addChangeListener = (listener: Function) => {
     console.log("addChangeListener - ", listener);
@@ -44,9 +54,57 @@ export default (initalState = INITIAL_STATE) => {
   };
 
   const events: IEvent = {
+    arrowHandler: (arrow: string) => {
+      let pos: number = state.pos;
+      const loop = state.list.length;
+      //remove active
+      const active = document.getElementsByClassName("item-active");
+      active?.item(0)?.setAttribute("class", "item");
+
+      if (!loop) {
+        return;
+      }
+
+      if (arrow == "ArrowDown") {
+        const nextPos = ++pos % loop;
+        if (!nextPos) {
+          pos = 0;
+        }
+      }
+
+      if (arrow == "ArrowUp") {
+        if (--pos <= -1) {
+          pos = loop - 1;
+        }
+      }
+
+      //set Selected Item.
+      const items = document.getElementsByClassName("item");
+      items.item(pos)?.setAttribute("class", "item-active");
+
+      setPos(pos);
+    },
     clearItemList: () => {
       state.list = [];
       invokeListeners();
+    },
+    enterItem: () => {
+      const active = <HTMLElement>(
+        document.getElementsByClassName("item-active")?.item(0)
+      );
+
+      if (active?.dataset.value) {
+        state.input = active?.dataset.value;
+        events.clearItemList();
+      }
+    },
+    setDisplayBlock: () => {
+      return (targetElement: HTMLElement) =>
+        targetElement.setAttribute("style", "display : block");
+    },
+    setDisplayNone: () => {
+      return (targetElement: HTMLElement) =>
+        targetElement.setAttribute("style", "display : none");
     },
     setItemList: async (nextDataSet: Promise<Array<autoDataSet>>) => {
       const list = await nextDataSet;
@@ -55,10 +113,15 @@ export default (initalState = INITIAL_STATE) => {
       });
 
       console.log(state.list);
+      setPos(-1);
       invokeListeners();
     },
     setInput: (nextInput: string) => {
       state.input = nextInput;
+      if (!nextInput) {
+        return events.clearItemList();
+      }
+
       invokeListeners();
     },
   };

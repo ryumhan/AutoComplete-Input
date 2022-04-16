@@ -43,7 +43,7 @@
 }
 
 /*when navigating through the items using the arrow keys:*/
-.complete-active div{
+.item-active{
     /* background-color: DodgerBlue !important;  */
     border: 2px solid DodgerBlue;
     /* color: #ffffff;  */
