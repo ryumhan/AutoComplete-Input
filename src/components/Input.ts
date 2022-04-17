@@ -11,7 +11,21 @@ const addDebounceEvent = (
 ) => {
   let inDebounce_: NodeJS.Timeout;
 
+  const getList = () => {
+    const value = element.value;
+    //If time is enough
+    event.setInput(value);
+    if (value) {
+      const data = fetchItems(uri + value);
+      event.setItemList(data);
+    }
+  };
+
   element.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.isComposing) {
+      return;
+    }
+
     if (e.key == "Enter") {
       event.enterItem();
       return;
@@ -29,18 +43,16 @@ const addDebounceEvent = (
     }
     //Set Timer
     inDebounce_ = setTimeout(() => {
-      const value = element.value;
-      //If time is enough
-      event.setInput(value);
-      if (value) {
-        const data = fetchItems(uri + value);
-        event.setItemList(data);
-      }
+      getList();
     }, interval);
   });
 
   element.addEventListener("focusout", (e: Event) => {
     event.clearItemList();
+  });
+
+  element.addEventListener("focusin", (e: Event) => {
+    getList();
   });
 };
 

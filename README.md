@@ -1,4 +1,4 @@
-# Framworkless Study - AutoComplete-Input
+# Frameworkless Study - AutoComplete-Input
 AutoComplete-Input
 
 Language
@@ -7,22 +7,19 @@ Language
 Package
 - WebPack, Webpack html Plugin, Webpack dev-server
 
-Unit TEST Package
-- chai, mocha, ts-node
-
 Run, Html Serving, Test/Develop ENVIRONMENT
-- Lite server ( npm start )
+- webpack serving ( npm run serve )
 - Live Server Plugin (vscode)
 
 Directory
 - simple.css
 - index.html
-- src/components : UI 요소
+- src/components : UI Component
 - src/core : Data Handling
-- src/main : Main instance
-- test
+- src/controller : state model, event, rendering controller
 
 Features
+- Frameworkless, using registry, observing state pattern.
 - auto complete input
 - key input event debounce 
 - mouse event (focus out, focus in, click item) handle

@@ -15,7 +15,7 @@ const getStrongItem = (rest: string, input: string) => {
   strong.innerText = input;
   item.dataset.txt = rest;
   //Set rest text
-  item.append(rest);
+  item.innerHTML = item.innerHTML.trim() + rest;
   //For event delegation
   item.dataset.value = input + rest;
   return item;
